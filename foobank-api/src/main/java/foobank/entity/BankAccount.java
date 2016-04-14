@@ -19,6 +19,15 @@ public class BankAccount {
     double balance;
     
     
+    public BankAccount() {
+    }
+    
+    public BankAccount(Customer customer, double balance) {
+        setCustomer(customer);
+        setBalance(balance);
+    }
+    
+    
     public Long getId() {
         return id;
     }
