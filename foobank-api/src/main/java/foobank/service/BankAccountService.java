@@ -1,4 +1,4 @@
-package foobank;
+package foobank.service;
 
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.FormParam;
