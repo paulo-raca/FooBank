@@ -18,7 +18,7 @@ import foobank.service.BankAccountServiceImpl;
  */
 public class Main {
     // Base URI the Grizzly HTTP server will listen on
-    public static final String BASE_URI = "http://localhost:5617/foobank/";
+    public static final String BASE_URI = System.getProperty("foobank.uri", "http://localhost:5617/foobank/");
 
     static {
         Logger logger = Logger.getLogger("org.glassfish.grizzly.http.server.HttpHandler");
