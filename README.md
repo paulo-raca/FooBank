@@ -19,6 +19,7 @@ It is very, _very_ simple, therefore it has a number of limitations:
 
 - It's OK to overdraft an account.
 
+- No security mechanism whatsoever.
 
 
 ## Running the server
