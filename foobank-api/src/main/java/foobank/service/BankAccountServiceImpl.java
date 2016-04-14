@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.ws.rs.BadRequestException;
 
 import foobank.entity.BankAccount;
 import foobank.entity.Customer;
@@ -27,7 +28,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     public long createBankAccount(long customerId, double initialBalance) {
         
         if (initialBalance < 0) {
-            throw new IllegalArgumentException("Initial balance must be non-negative");
+            throw new BadRequestException("Initial balance must be non-negative");
         }
         
         EntityManager em = entityManagerFactory.createEntityManager();
@@ -35,7 +36,7 @@ public class BankAccountServiceImpl implements BankAccountService {
             em.getTransaction().begin();
             Customer customer = em.find(Customer.class, customerId);
             if (customer == null) {
-                throw new IllegalArgumentException("Customer not found: " + customerId);
+                throw new BadRequestException("Customer not found: " + customerId);
             }
             BankAccount newAccount = new BankAccount(customer, initialBalance);
             em.persist(newAccount);
@@ -68,7 +69,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         try {
             BankAccount account = em.find(BankAccount.class, accountId);
             if (account == null) {
-                throw new IllegalArgumentException("Account not found: " + accountId);
+                throw new BadRequestException("Account not found: " + accountId);
             }
             return account.getBalance();
         } finally {
@@ -89,7 +90,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         try {
             BankAccount account = em.find(BankAccount.class, accountId);
             if (account == null) {
-                throw new IllegalArgumentException("Account not found: " + accountId);
+                throw new BadRequestException("Account not found: " + accountId);
             }
             List<TransferInfo> ret = new ArrayList<>();
             List<Transfer> transfers = em.createQuery("FROM Transfer WHERE source=:account OR destination=:account", Transfer.class)
@@ -117,7 +118,7 @@ public class BankAccountServiceImpl implements BankAccountService {
     @Override
     public void transfer(long srcAccountId, long destAccountId, double amount) {        
         if (amount <= 0) {
-            throw new IllegalArgumentException("Transfer amount must be positive");
+            throw new BadRequestException("Transfer amount must be positive");
         }
         
         EntityManager em = entityManagerFactory.createEntityManager();
@@ -125,11 +126,11 @@ public class BankAccountServiceImpl implements BankAccountService {
             em.getTransaction().begin();
             BankAccount srcAccount = em.find(BankAccount.class, srcAccountId);
             if (srcAccount == null) {
-                throw new IllegalArgumentException("Source account not found: " + srcAccountId);
+                throw new BadRequestException("Source account not found: " + srcAccountId);
             }
             BankAccount destAccount = em.find(BankAccount.class, destAccountId);
             if (destAccount == null) {
-                throw new IllegalArgumentException("Destination account not found: " + destAccountId);
+                throw new BadRequestException("Destination account not found: " + destAccountId);
             }
             
             srcAccount.setBalance(srcAccount.getBalance() - amount);

@@ -8,6 +8,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 
 /**
  * API with services related with bank accounts
@@ -22,6 +24,7 @@ public interface BankAccountService {
      * @return Identifier of the new bank account
      */
     @POST
+    @Produces(MediaType.TEXT_PLAIN)
     public long createBankAccount(
             @FormParam("customerId") long customerId, 
             @DefaultValue("0") @FormParam("balance") double initialBalance);
@@ -33,6 +36,7 @@ public interface BankAccountService {
      */
     @GET
     @Path("{accountId}/balance")
+    @Produces(MediaType.TEXT_PLAIN)
     public double getBalance(
             @PathParam("accountId") long accountId);
 
@@ -43,6 +47,7 @@ public interface BankAccountService {
      */
     @GET
     @Path("{accountId}/history")
+    @Produces(MediaType.APPLICATION_JSON)
     public List<TransferInfo> getTransferHistory (
             @PathParam("accountId") long accountId);
 
